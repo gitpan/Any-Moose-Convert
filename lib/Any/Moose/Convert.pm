@@ -4,7 +4,7 @@ use 5.008_001;
 use strict;
 use warnings;
 
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 use base qw(Exporter);
 our @EXPORT = qw(moose2mouse mouse2moose);
@@ -12,9 +12,10 @@ our @EXPORT = qw(moose2mouse mouse2moose);
 use PerlIO::Util;
 use File::Find;
 use File::Spec;
-use File::Copy qw(move);
 use File::Path qw(mkpath);
 use File::Basename qw(dirname);
+
+my $IGNORE = qr/\A \. (?: git | svn | cvs | hg) \b/;
 
 sub moose2mouse { _moose2mouse(1, @_) }
 sub mouse2moose { _moose2mouse(0, @_) }
@@ -87,11 +88,13 @@ sub _do_moose2mouse_to_file {
         $content = <$in>;
     }
 
-    if($moose2mouse){
-        _convert_moose_to_mouse(\$content);
-    }
-    else{
-        _convert_mouse_to_moose(\$content);
+    if($file !~ $IGNORE){
+        if($moose2mouse){
+            _convert_moose_to_mouse(\$content);
+        }
+        else{
+            _convert_mouse_to_moose(\$content);
+        }
     }
 
     mkpath(dirname($new_file), 1);
@@ -151,7 +154,7 @@ Any::Moose::Convert - Convert Moose libraries to Mouse ones, or vice versa
 
 =head1 VERSION
 
-This document describes Any::Moose::Convert version 0.001.
+This document describes Any::Moose::Convert version 0.002.
 
 =head1 SYNOPSIS
 
