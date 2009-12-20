@@ -1,10 +1,9 @@
 package Any::Moose::Convert;
-
 use 5.008_001;
 use strict;
 use warnings;
 
-our $VERSION = '0.002';
+our $VERSION = '0.003';
 
 use base qw(Exporter);
 our @EXPORT = qw(moose2mouse mouse2moose);
@@ -106,14 +105,14 @@ sub _do_moose2mouse_to_file {
     return;
 }
 
-
 my $cmop_utils = join '|', qw(
     is_class_loaded
     load_class
+    load_first_existing_class
     class_of
     get_metaclass_by_name
+    get_code_info
 );
-
 
 sub _convert_moose_to_mouse {
     local(*_) = @_;
@@ -154,7 +153,7 @@ Any::Moose::Convert - Convert Moose libraries to Mouse ones, or vice versa
 
 =head1 VERSION
 
-This document describes Any::Moose::Convert version 0.002.
+This document describes Any::Moose::Convert version 0.003.
 
 =head1 SYNOPSIS
 
