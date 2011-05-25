@@ -41,3 +41,6 @@
 # skip author's files
 \bauthor\b
 
+MYMETA\.yml$
+
+
